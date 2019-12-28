@@ -11,6 +11,11 @@ const express = require('express');
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.get('/auth/logout', (req, res) => {
+    console.log("hitting the login url");
+    res.send('login you out');
+})
     
 
 app.get('/', (req, res) => {
