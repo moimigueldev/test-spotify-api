@@ -17,7 +17,7 @@ passport.use(
 
         },
         function (accessToken, refreshToken, expires_in, profile, done) {
-            console.log(profile)
+            console.log('passport', profile)
         }
     )
 );

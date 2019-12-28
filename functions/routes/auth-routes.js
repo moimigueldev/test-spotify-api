@@ -8,7 +8,7 @@ const keys = require('../auth-config');
 var SpotifyWebApi = require('spotify-web-api-node');
 
 
-let scopes = ['user-top-read']
+let scopes = ['user-top-read', 'user-read-recently-played']
 
 
 var spotifyApi = new SpotifyWebApi({
