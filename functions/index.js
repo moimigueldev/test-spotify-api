@@ -7,35 +7,31 @@ const express = require('express');
     port = process.ENV || 4000,
     cors = require('cors');
 
- 
+    
+
+const authRoutes = require('./routes/auth-routes');
+const passportSetup = require('./config/passport-setup')
+
+
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
-// app.use((req, res, next) =>  {
-//     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+// app.use((req, res, next) => {
+//     // console.log('index', res)
 //     next();
-//   });
+    
+// })
 
-app.get('/auth/logout', (req, res) => {
-    console.log("hitting the login url");
-    // res.send('login you out');
-    res.redirect('http://localhost:5000/angular-532f5/us-central1/app/auth/redirect/');
 
-});
+app.use('/auth', authRoutes)
 
-app.get('/auth/redirect', (req, res) => {
-    console.log('hit the redirect');
+app.get('/', (req , res) => {
 
-    res.send('redirected')
+    res.send('ok')
 })
 
-// app.get('/', (req, res) => {
-//     res.send('ok')
-// })
-    
+
 
 
 
