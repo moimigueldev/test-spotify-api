@@ -14,14 +14,22 @@ app.use(bodyParser.json());
 
 
 // app.use((req, res, next) =>  {
-//     res.header("Access-Control-Allow-Origin", "https://onsnip.com/"); // update to match the domain you will make the request from
+//     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
 //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //     next();
 //   });
 
 app.get('/auth/logout', (req, res) => {
     console.log("hitting the login url");
-    res.send('login you out');
+    // res.send('login you out');
+    res.redirect('http://localhost:5000/angular-532f5/us-central1/app/auth/redirect/');
+
+});
+
+app.get('/auth/redirect', (req, res) => {
+    console.log('hit the redirect');
+
+    res.send('redirected')
 })
 
 // app.get('/', (req, res) => {
