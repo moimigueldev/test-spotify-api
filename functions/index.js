@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 
+
 const express = require('express');
     path = require('path'),
     app = express(),
@@ -17,11 +18,6 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// app.use((req, res, next) => {
-//     // console.log('index', res)
-//     next();
-    
-// })
 
 
 app.use('/auth', authRoutes)
