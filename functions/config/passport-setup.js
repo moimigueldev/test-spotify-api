@@ -22,7 +22,6 @@ passport.use(
 
         },
         async function (accessToken, refreshToken, expires_in, profile, done) {
-
             let user = await db.collection('spotify-users').doc(profile.id).get()
 
             if (!user.data()) { //does not exist yet
@@ -43,6 +42,7 @@ passport.use(
               })
             } else {
                 console.log("user exist", user.data())
+                done();
             }
 
             

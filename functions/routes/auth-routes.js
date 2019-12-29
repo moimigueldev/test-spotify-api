@@ -14,28 +14,21 @@ let scopes = ['user-top-read', 'user-read-recently-played']
 var spotifyApi = new SpotifyWebApi({
     clientId: keys.spotify['client-id'],
     clientSecret: keys.spotify['client-secret'],
-    redirectUri: 'http://localhost:5000/angular-532f5/us-central1/app/auth/spotify/callback',
+    redirectUri: encodeURIComponent(keys.spotify['redirect-url']),
   });
 
 router.get('/login', (req, res)=> {
     const html = spotifyApi.createAuthorizeURL(scopes)
-    res.send({html})
+    console.log('login ', html)
+    res.send({url: html})
 })
 
 
-// router.get('/spotify/callback', (req, res) => {
-//     console.log('ok');
-//     res.send('reached call back uri')
-//   });
-
 router.get('/spotify/callback', passport.authenticate('spotify'), (req, res) => {
     console.log('ok');
-    res.redirect('https://google.com')
+    res.redirect('http://localhost:4200/dashboard')
   });
 
-// router.get('/logout', (req, res) => {
-//     res.send('loging out')
-// })
 
 
 module.exports = router;
