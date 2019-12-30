@@ -1,7 +1,5 @@
 const router = require('express').Router();
 const passport = require('passport');
-const cors = require('cors');
-const querystring = require('querystring')
 const keys = require('../auth-config');
 
 
