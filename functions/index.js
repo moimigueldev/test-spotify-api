@@ -1,15 +1,13 @@
 const functions = require('firebase-functions');
 
 
-const express = require('express');
-    path = require('path'),
+const express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
-    port = process.ENV || 4000,
-    cors = require('cors')
-    keys = require('./auth-config');
+    cors = require('cors');
+// keys = require('./auth-config');
 
-    
+
 
 const authRoutes = require('./routes/auth-routes');
 const passportSetup = require('./config/passport-setup'); // NOT IN USE, BUT NEEDS TO BE IN INDEX.JS
@@ -17,9 +15,10 @@ const cookieSession = require('cookie-session');
 const passport = require('passport')
 
 
+
 app.use(cookieSession({
-    maxAge: 24 * 60* 60 * 1000, // max age is a day
-    keys: [keys.session.cookieKey] //encrypts the cookie
+    maxAge: 24 * 60 * 60 * 1000, // max age is a day
+    keys: ['user'], //encrypts the cookie,
 }));
 
 
@@ -33,10 +32,17 @@ app.use(bodyParser.json());
 
 
 
+
+
 app.use('/auth', authRoutes)
 
-app.get('/', (req , res) => {
+// app.get('/logout', (req, res) => {
+//     // console.log('req', req.user)
+//   res.send('user', req.user)
+// })
 
+app.get('/', (req, res) => {
+    // console.log('user', req.user)
     res.send('ok')
 })
 
