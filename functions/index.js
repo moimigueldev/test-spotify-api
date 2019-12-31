@@ -16,15 +16,12 @@ const passport = require('passport')
 
 
 
-app.use(cookieSession({
-    maxAge: 24 * 60 * 60 * 1000, // max age is a day
-    keys: ['user'], //encrypts the cookie,
-}));
+// app.use(cookieSession({
+//     maxAge: 24 * 60 * 60 * 1000, // max age is a day
+//     keys: ['user'], //encrypts the cookie,
+// }));
 
 
-// INITIALIZE PASSPORT
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
