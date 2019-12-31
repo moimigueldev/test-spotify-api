@@ -25,6 +25,7 @@
     "passport-spotify": "^1.1.0",
     "querystring": "^0.2.0",
     "request": "^2.88.0",
+    "request-promise": "^4.2.5",
     "spotify-web-api-node": "^4.0.0"
   },
   "devDependencies": {

@@ -1,15 +1,17 @@
 const router = require('express').Router();
-const passport = require('passport');
 const keys = require('../auth-config');
 
 const request = require('request')
+const rp = require('request-promise');
+const searchUserDb = require('./search-db-user');
+const analyticsSearch = require('./collect-user-data')
 
 
 
 const SpotifyWebApi = require('spotify-web-api-node');
 
 
-const scopes = ['user-top-read', 'user-read-recently-played']
+const scopes = ['user-top-read', 'user-read-recently-played', 'user-follow-read']
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -19,14 +21,8 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 
-const admin = require('firebase-admin');
-const serviceAccountKey = require('.././ServiceAccountKey.json')
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccountKey)
-});
 
-const db = admin.firestore();
 
 
 
@@ -39,51 +35,32 @@ router.get('/login', (req, res) => {
 
 
 router.get('/spotify/callback', (req, res) => {
-
-
   res.redirect('http://localhost:4200/dashboard')
   // res.redirect('https://onsnip.com/dashboard')
 });
 
 
-router.post('/user', (req, res) => {
+router.post('/user', async (req, res) => {
 
-  var options = {
+  const options = {
     url: 'https://api.spotify.com/v1/me',
     headers: {
       'Authorization': `Bearer ${req.body.token}`
     }
   };
-   
   
    
-  request(options, async (err, body, response) => {
-    const profile = JSON.parse(response)
-    const user = await db.collection('spotify-users').doc(profile.id).get();
+  const userInfo = await rp(options)
+  
 
-            if (!user.data()) { //does not exist yet
-                console.log('creating new user');
-                const newUser = {
-                    id: profile.id,
-                    dateUpdated: new Date(),
-                    displayName: profile.displayName,
-                    followers: profile.followers,
-                    accessToken: accessToken
-                };
+  
+ const currentUser = await searchUserDb(JSON.parse(userInfo), req.body.token)
+//  const artistFollowing = await analyticsSearch.artistFollowing(currentUser.id, req.body.token)
+ const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
+  
 
-
-                db.collection('spotify-users').doc(profile.id).set(newUser).then((user) => {
-                    // console.log('new User Created', user.data().id)
-                    // done(null, user.data())
-                })
-            } else {
-                console.log("user exist", user.data().id)
-                // done(null, user.data())
-            }
-  });
-
-  console.log(req.body, 'adf')
-  res.send({ok: 'ok'})
+  // console.log(req.body, 'adf')
+  res.send(playlist)
   
 })
 
