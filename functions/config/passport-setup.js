@@ -8,7 +8,20 @@ admin.initializeApp ({
     credential: admin.credential.cert(serviceAccountKey)
 });
 
-let db = admin.firestore();
+const db = admin.firestore();
+
+passport.serializeUser((user, done) => {
+    console.log('Serializing user', user)
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    console.log('Deserializing user', id)
+    const user = await db.collection('spotify-users').doc(id).get();
+    done(null, user.data())
+
+
+})
 
 
 
@@ -22,12 +35,11 @@ passport.use(
 
         },
         async function (accessToken, refreshToken, expires_in, profile, done) {
-            let user = await db.collection('spotify-users').doc(profile.id).get()
+            const user = await db.collection('spotify-users').doc(profile.id).get();
 
             if (!user.data()) { //does not exist yet
-
                 console.log('creating new user');
-                let newUser = {
+                const newUser = {
                 id: profile.id,
                 dateUpdated: new Date(),
                 displayName: profile.displayName,
@@ -35,17 +47,15 @@ passport.use(
                 accessToken:accessToken
               };
 
-              console.log(newUser)
               
               db.collection('spotify-users').doc(profile.id).set(newUser).then((user) => {
-                  console.log('new User Created', user)
+                  console.log('new User Created', user.data().id)
+                  done(null, user.data())
               })
             } else {
-                console.log("user exist", user.data())
-                done();
+                console.log("user exist", user.data().id)
+                done(null, user.data())  
             }
-
-            
-        }
-    )
-);
+        } //end of asyn function
+    )//end of passport Strategy
+); //end of passport.use
