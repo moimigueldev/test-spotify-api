@@ -41,8 +41,8 @@ router.get('/login', (req, res) => {
 router.get('/spotify/callback', (req, res) => {
 
 
-  // res.redirect('http://localhost:4200/dashboard')
-  res.redirect('https://onsnip.com/dashboard')
+  res.redirect('http://localhost:4200/dashboard')
+  // res.redirect('https://onsnip.com/dashboard')
 });
 
 
