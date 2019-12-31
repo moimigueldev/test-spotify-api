@@ -32,17 +32,11 @@ app.use(bodyParser.json());
 
 
 
-
-
 app.use('/auth', authRoutes)
 
-// app.get('/logout', (req, res) => {
-//     // console.log('req', req.user)
-//   res.send('user', req.user)
-// })
+
 
 app.get('/', (req, res) => {
-    // console.log('user', req.user)
     res.send('ok')
 })
 

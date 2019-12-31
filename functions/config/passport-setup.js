@@ -1,19 +1,19 @@
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const keys = require('../auth-config');
-const admin = require('firebase-admin');
-const serviceAccountKey = require('.././ServiceAccountKey.json')
+// const admin = require('firebase-admin');
+// const serviceAccountKey = require('.././ServiceAccountKey.json')
+// console.log('keus', keys.spotify['client-id'])
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccountKey)
+// });
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccountKey)
-});
+// const db = admin.firestore();
 
-const db = admin.firestore();
-
-passport.serializeUser((user, done) => {
-    // console.log('Serializing user', user)
-    done(null, user.id);
-});
+// passport.serializeUser((user, done) => {
+//     // console.log('Serializing user', user)
+//     done(null, user.id);
+// });
 
 passport.deserializeUser(async (id, done) => {
     // console.log('Deserializing user', id)

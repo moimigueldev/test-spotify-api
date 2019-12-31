@@ -2,6 +2,9 @@ const router = require('express').Router();
 const passport = require('passport');
 const keys = require('../auth-config');
 
+const request = require('request')
+
+
 
 const SpotifyWebApi = require('spotify-web-api-node');
 
@@ -16,32 +19,80 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 
+const admin = require('firebase-admin');
+const serviceAccountKey = require('.././ServiceAccountKey.json')
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccountKey)
+});
+
+const db = admin.firestore();
+
 
 
 router.get('/login', (req, res) => {
-  const html = spotifyApi.createAuthorizeURL(scopes)
+  let html = spotifyApi.createAuthorizeURL(scopes)
+  html = html.replace('code', 'token');
   res.send({ url: html })
 })
 
 
-//route gets authenticated with passport before the function 
-// router.get('/spotify/callback', passport.authenticate('spotify'), (req, res) => {
-//     // console.log('callback url hit', req.user);
-//     res.redirect('http://localhost:4200/dashboard')
-//   });
-
-
 
 router.get('/spotify/callback', (req, res) => {
-  // console.log('callback url hit');
-  res.redirect('https://onsnip.com/dashboard')
+
+
+  res.redirect('http://localhost:4200/dashboard')
+  // res.redirect('https://onsnip.com/dashboard')
 });
 
 
-router.get('/logout', (req, res) => {
+router.post('/user', (req, res) => {
+
+  var options = {
+    url: 'https://api.spotify.com/v1/me',
+    headers: {
+      'Authorization': `Bearer ${req.body.token}`
+    }
+  };
+   
   
-  res.send('user', req)
+   
+  request(options, async (err, body, response) => {
+    const profile = JSON.parse(response)
+    const user = await db.collection('spotify-users').doc(profile.id).get();
+
+            if (!user.data()) { //does not exist yet
+                console.log('creating new user');
+                const newUser = {
+                    id: profile.id,
+                    dateUpdated: new Date(),
+                    displayName: profile.displayName,
+                    followers: profile.followers,
+                    accessToken: accessToken
+                };
+
+
+                db.collection('spotify-users').doc(profile.id).set(newUser).then((user) => {
+                    // console.log('new User Created', user.data().id)
+                    // done(null, user.data())
+                })
+            } else {
+                console.log("user exist", user.data().id)
+                // done(null, user.data())
+            }
+  });
+
+  console.log(req.body, 'adf')
+  res.send({ok: 'ok'})
+  
 })
+
+
+router.get('/logout',  (req, res) => {
+  res.send('ok')
+  // res.redirect('http://localhost:5000/angular-532f5/us-central1/app/auth/logout-server');
+})
+
 
 
 
