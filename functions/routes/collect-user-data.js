@@ -36,6 +36,26 @@ playlist = async (id, token) => {
     
 }
 
+savedtracks = async (token) =>  {
+  console.log('Saved Tracks')
+
+  const options = {
+    'method': 'GET',
+    'url': `https://api.spotify.com/v1/me/tracks?limit=50&offset=50`,
+    'headers': {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  
+
+  let tracks = await rp(options)
+  // console.log('savied rtac', savedTracks)
+  tracks = JSON.parse(tracks)
+
+  return tracks
+
+}
+
 
 module.exports= {artistFollowing,
-playlist}
+playlist, savedtracks}

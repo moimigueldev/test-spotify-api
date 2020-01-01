@@ -11,7 +11,7 @@ const analyticsSearch = require('./collect-user-data')
 const SpotifyWebApi = require('spotify-web-api-node');
 
 
-const scopes = ['user-top-read', 'user-read-recently-played', 'user-follow-read']
+const scopes = ['user-top-read', 'user-read-recently-played', 'user-follow-read', 'user-library-read']
 
 
 const spotifyApi = new SpotifyWebApi({
@@ -56,11 +56,12 @@ router.post('/user', async (req, res) => {
   
  const currentUser = await searchUserDb(JSON.parse(userInfo), req.body.token)
 //  const artistFollowing = await analyticsSearch.artistFollowing(currentUser.id, req.body.token)
- const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
+//  const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
+//  const savedTracks = await analyticsSearch.savedtracks(req.body.token)
   
-
+  // console.log(savedTracks)
   // console.log(req.body, 'adf')
-  res.send(playlist)
+  res.send({hello: userInfo})
   
 })
 
