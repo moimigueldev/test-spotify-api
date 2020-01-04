@@ -17,9 +17,17 @@ searchDBForUser = async (userLoggedIn, token) => {
         const newUser = {
             id: profile.id,
             dateUpdated: new Date(),
-            displayName: profile.displayName,
+            displayName: profile.display_name,
             followers: profile.followers,
-            token
+            token,
+            artistFollowing: [],
+            playlist: [],
+            filteredTracks: [],
+            topTracks: [],
+            topArtist: [],
+            tracksThisMonth: [],
+            tracksThisYear: [],
+            tracksLastYear: []
         };
 
         
@@ -32,8 +40,41 @@ searchDBForUser = async (userLoggedIn, token) => {
 }
 
 
-saveUserData = async(data) => {
-    console.log('data')
+saveUserData = async(data, token) => {
+    // console.log('user', data)
+    const updateUser = {
+        id: data.user.id,
+        dateUpdated: new Date(),
+        displayName: data.user.display_name,
+        followers: data.user.followers,
+        token,
+        artistFollowing: data.userArtistFollowing,
+        playlist: data.userPlaylist,
+        savedTracks: data.userSavedTracks,
+        topTracks: data.userTopTracks,
+        topArtist: data.userTopArtist
+    }; 
+    // console.log('user', updateUser)
+    db.collection('spotify-users').doc(data.user.id).update({
+        token,
+        artistFollowing: data.userArtistFollowing,
+        playlist: data.userPlaylist,
+        topTracks: data.userTopTracks,
+        topArtist: data.userTopArtist,
+        dateUpdated: new Date(),
+        filteredTracks: data.filteredTracks,
+        tracksThisMonth: data.filteredTracks.thisMonth,
+        tracksThisYear: data.filteredTracks.thisYear,
+        tracksLastYear: data.filteredTracks.lastYear
+    })
+    .then(response => {
+        console.log('user', response)
+        return response
+    })
+    .catch(err => console.log('ERROR saving user data to the db', err))
+  
+
+    return 'ok'
 }
 
 

@@ -97,17 +97,18 @@ const savedTracksOffset = 0;
 userData = async(user, token) => {
   const userArtistFollowing = await artistFollowing(token);
   const userPlaylist = await playlist(user.id, token);
-  // const userSavedTracks = await savedtracks(savedTracksOffset, token)
-  // const filteredTracks = filterData.userData(userSavedTracks)
+  const userSavedTracks = await savedtracks(savedTracksOffset, token)
+  const filteredTracks = filterData.userData(userSavedTracks)
   const userTopTracks = await getTopTracks(token)
   const userTopArtist = await getTopArtist(token)
   return {
     userArtistFollowing, 
     userPlaylist,
-    // userSavedTracks,
-    // filteredTracks,
+    userSavedTracks,
+    filteredTracks,
     userTopTracks,
-    userTopArtist
+    userTopArtist,
+    user
   }
 }
 

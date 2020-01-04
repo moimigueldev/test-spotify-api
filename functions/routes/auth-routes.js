@@ -42,7 +42,6 @@ router.get('/spotify/callback', (req, res) => {
 });
 
 
-let tracksOffset = 0;
 
 router.post('/user', async (req, res) => {
 
@@ -63,6 +62,16 @@ router.post('/user', async (req, res) => {
 
    const currentUser = await userDB.searchDBForUser(userInfo, req.body.token)
    const userData = await analyticsSearch.userData(currentUser, req.body.token)
+
+
+  userDB.saveUserData(userData, req.body.token).then(response => {
+    console.log('respoinse', response)
+    res.send(userData)
+  })
+  .catch(err => console.log('Error Saving User to the db', err))
+
+  // res.send(userData)
+
   //  const artistFollowing = await analyticsSearch.artistFollowing(currentUser.id, req.body.token)
   //  const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
   //  const savedTracks = await analyticsSearch.savedtracks(tracksOffset, req.body.token)
@@ -83,8 +92,8 @@ router.post('/user', async (req, res) => {
 
   // console.log('filter', filterData.tracksAddedThisMonth())
 
-  res.send(userData)
-
+  
+ 
 
 })
 
