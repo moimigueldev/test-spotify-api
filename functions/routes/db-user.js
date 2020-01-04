@@ -32,4 +32,12 @@ searchDBForUser = async (userLoggedIn, token) => {
 }
 
 
-module.exports = searchDBForUser
+saveUserData = async(data) => {
+    console.log('data')
+}
+
+
+module.exports = {
+    searchDBForUser,
+    saveUserData
+}

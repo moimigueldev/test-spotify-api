@@ -1,9 +1,7 @@
 const rp = require('request-promise');
-const admin = require('firebase-admin');
-const db = admin.firestore();
 const filterData = require('./filter-data');
 
-artistFollowing = async (id, token) => {
+artistFollowing = async (token) => {
   const options = {
     'method': 'GET',
     'url': 'https://api.spotify.com/v1/me/following?type=artist&limit=50',
@@ -12,10 +10,8 @@ artistFollowing = async (id, token) => {
     }
   };
 
-  let artistFollowing = await rp(options)
-  artistFollowing = JSON.parse(artistFollowing)
-
-  return artistFollowing
+  return rp(options).then(response => JSON.parse(response).artists.items)
+  .catch(err => console.log('Error with geting users artist following', err))
 }
 
 playlist = async (id, token) => {
@@ -28,10 +24,8 @@ playlist = async (id, token) => {
     }
   };
 
-
-  let playlist = await rp(options)
-  playlist = JSON.parse(playlist)
-  return playlist
+  return rp(options).then(response => JSON.parse(response).items)
+  .catch(err => console.log('Error with getting the user\'s Playlist', err))
 
 }
 
@@ -68,11 +62,60 @@ getUsersSavedTracks = async (offset, token) => {
 
     return rp(options)
 
+}
 
+getTopTracks = async (token) => {
+  const options = {
+    'method': 'GET',
+    'url': 'https://api.spotify.com/v1/me/top/tracks?limit=50',
+    'headers': {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  return rp(options).then(response => JSON.parse(response).items)
+  .catch(err => err)
+}
+
+getTopArtist = async (token) => {
+  const options = {
+    'method': 'GET',
+    'url': 'https://api.spotify.com/v1/me/top/artists?limit=50',
+    'headers': {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  return rp(options).then(response => JSON.parse(response).items)
+  .catch(err => {
+    console.log("err", err)
+  })
+}
+
+
+const savedTracksOffset = 0;
+userData = async(user, token) => {
+  const userArtistFollowing = await artistFollowing(token);
+  const userPlaylist = await playlist(user.id, token);
+  // const userSavedTracks = await savedtracks(savedTracksOffset, token)
+  // const filteredTracks = filterData.userData(userSavedTracks)
+  const userTopTracks = await getTopTracks(token)
+  const userTopArtist = await getTopArtist(token)
+  return {
+    userArtistFollowing, 
+    userPlaylist,
+    // userSavedTracks,
+    // filteredTracks,
+    userTopTracks,
+    userTopArtist
+  }
 }
 
 
 module.exports = {
   artistFollowing,
-  playlist, savedtracks
+  playlist, savedtracks,
+  getTopTracks,
+  getTopArtist,
+  userData
 }

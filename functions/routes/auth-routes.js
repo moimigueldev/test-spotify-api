@@ -3,7 +3,7 @@ const keys = require('../auth-config');
 
 const request = require('request')
 const rp = require('request-promise');
-const searchUserDb = require('./db-user');
+const userDB = require('./db-user');
 const analyticsSearch = require('./collect-user-data')
 const filterData = require('./filter-data');
 const write = require('write');
@@ -61,11 +61,15 @@ router.post('/user', async (req, res) => {
     .catch(err => res.send(err))
 
 
-  //  const currentUser = await searchUserDb(userInfo, req.body.token)
+   const currentUser = await userDB.searchDBForUser(userInfo, req.body.token)
+   const userData = await analyticsSearch.userData(currentUser, req.body.token)
   //  const artistFollowing = await analyticsSearch.artistFollowing(currentUser.id, req.body.token)
   //  const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
   //  const savedTracks = await analyticsSearch.savedtracks(tracksOffset, req.body.token)
+  //  const getTopTracks = await analyticsSearch.getTopTracks(req.body.token)
+  //  const getTopArtist = await analyticsSearch.getTopArtist(req.body.token)
 
+  // res.send({ hello: artistFollowing })
 
   // TO BE ABLE TO TEST THE FILTER DATA FUNCTIONS, YOU MUST FIRST CREATE A DOCUMENT TO YOUR DIR WITH THIS CODE BELOW
   // ONCE THE FILE IS CREATED, PLEASE COMMENT IT OUT AGAIN.
@@ -75,12 +79,11 @@ router.post('/user', async (req, res) => {
   //  })
 
   
-  
+
 
   // console.log('filter', filterData.tracksAddedThisMonth())
 
-  // res.send({ hello: 'savedTracks' })
-  res.send(filterData.userData())
+  res.send(userData)
 
 
 })

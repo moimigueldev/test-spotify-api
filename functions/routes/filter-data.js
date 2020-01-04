@@ -1,16 +1,16 @@
-const trackList = require('../tracks-small')
-const largeList = require('../tracks')
+// const trackList = require('../tracks-small')
+// const largeList = require('../tracks')
 const moment = require('moment');
 
 
-userData = () => {
+userData = (list) => {
     const date = moment().format().toString().split('-');
     const thisYear = [];
     const lastYear = [];
     const thisMonth = [];
     const artistsList = {}
 
-    trackList.forEach(el => {
+    list.forEach(el => {
 
         const createdAt = el.added_at.split('-');
         const artist = el.track.album.artists[0].name
