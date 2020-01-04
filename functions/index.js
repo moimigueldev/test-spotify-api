@@ -6,8 +6,12 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors');
 
+const admin = require('firebase-admin');
+const serviceAccountKey = require('./ServiceAccountKey.json')
 
-
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccountKey)
+});
 
 const authRoutes = require('./routes/auth-routes');
 

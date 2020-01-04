@@ -40,6 +40,8 @@ router.get('/spotify/callback', (req, res) => {
 });
 
 
+let tracksOffset = 0;
+
 router.post('/user', async (req, res) => {
 
   const options = {
@@ -57,10 +59,11 @@ router.post('/user', async (req, res) => {
  const currentUser = await searchUserDb(JSON.parse(userInfo), req.body.token)
 //  const artistFollowing = await analyticsSearch.artistFollowing(currentUser.id, req.body.token)
 //  const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
-//  const savedTracks = await analyticsSearch.savedtracks(req.body.token)
+ const savedTracks = await analyticsSearch.savedtracks(tracksOffset, req.body.token)
   
   
-  res.send({hello: userInfo})
+  // res.send({hello: savedTracks})
+  res.send({hello: savedTracks})
   
 })
 
