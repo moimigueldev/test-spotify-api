@@ -45,6 +45,7 @@ router.get('/spotify/callback', (req, res) => {
 
 router.post('/user', async (req, res) => {
 
+  console.log('user')
   const options = {
     url: 'https://api.spotify.com/v1/me',
     headers: {
@@ -53,7 +54,6 @@ router.post('/user', async (req, res) => {
   };
 
 
-  // const userInfo = await rp(options)
 
   const userInfo = await rp(options)
     .then(res => JSON.parse(res))
@@ -65,20 +65,14 @@ router.post('/user', async (req, res) => {
 
 
   userDB.saveUserData(userData, req.body.token).then(response => {
-    console.log('respoinse', response)
+    
     res.send(userData)
   })
-  .catch(err => console.log('Error Saving User to the db', err))
+  // .catch(err => console.log('Error Saving User to the db', err))
 
   // res.send(userData)
 
-  //  const artistFollowing = await analyticsSearch.artistFollowing(currentUser.id, req.body.token)
-  //  const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
-  //  const savedTracks = await analyticsSearch.savedtracks(tracksOffset, req.body.token)
-  //  const getTopTracks = await analyticsSearch.getTopTracks(req.body.token)
-  //  const getTopArtist = await analyticsSearch.getTopArtist(req.body.token)
 
-  // res.send({ hello: artistFollowing })
 
   // TO BE ABLE TO TEST THE FILTER DATA FUNCTIONS, YOU MUST FIRST CREATE A DOCUMENT TO YOUR DIR WITH THIS CODE BELOW
   // ONCE THE FILE IS CREATED, PLEASE COMMENT IT OUT AGAIN.
@@ -90,7 +84,7 @@ router.post('/user', async (req, res) => {
   
 
 
-  // console.log('filter', filterData.tracksAddedThisMonth())
+
 
   
  
@@ -101,6 +95,15 @@ router.post('/user', async (req, res) => {
 router.get('/logout', (req, res) => {
   res.send('ok')
   // res.redirect('http://localhost:5000/angular-532f5/us-central1/app/auth/logout-server');
+})
+
+
+router.get('/savedUser', (req, res) => {
+  userDB.getSavedUserData().then(response => {
+    console.log('this is the response', response);
+    res.send(response)
+  })
+  
 })
 
 

@@ -104,7 +104,7 @@ userData = async(user, token) => {
   return {
     userArtistFollowing, 
     userPlaylist,
-    userSavedTracks,
+    // userSavedTracks,
     filteredTracks,
     userTopTracks,
     userTopArtist,

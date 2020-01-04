@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const serviceAccountKey = require('.././ServiceAccountKey.json')
+const key = require('../auth-config')
 
 // admin.initializeApp({
 //     credential: admin.credential.cert(serviceAccountKey)
@@ -10,7 +11,7 @@ const db = admin.firestore();
 
 searchDBForUser = async (userLoggedIn, token) => {
     const profile = userLoggedIn
-    const user = await db.collection('spotify-users').doc(profile.id).get();
+    const user = await db.collection('users').doc(profile.id).get();
 
     if (!user.data()) { //does not exist yet
         console.log('creating new user');
@@ -19,19 +20,11 @@ searchDBForUser = async (userLoggedIn, token) => {
             dateUpdated: new Date(),
             displayName: profile.display_name,
             followers: profile.followers,
-            token,
-            artistFollowing: [],
-            playlist: [],
-            filteredTracks: [],
-            topTracks: [],
-            topArtist: [],
-            tracksThisMonth: [],
-            tracksThisYear: [],
-            tracksLastYear: []
-        };
+            token
+        }
 
         
-        db.collection('spotify-users').doc(profile.id).set(newUser).then((user) => {
+        db.collection('users').doc(profile.id).set(newUser).then((user) => {
             return user.data();
         })
     } else {
@@ -42,43 +35,59 @@ searchDBForUser = async (userLoggedIn, token) => {
 
 saveUserData = async(data, token) => {
     // console.log('user', data)
-    const updateUser = {
-        id: data.user.id,
-        dateUpdated: new Date(),
-        displayName: data.user.display_name,
-        followers: data.user.followers,
-        token,
-        artistFollowing: data.userArtistFollowing,
-        playlist: data.userPlaylist,
-        savedTracks: data.userSavedTracks,
-        topTracks: data.userTopTracks,
-        topArtist: data.userTopArtist
-    }; 
-    // console.log('user', updateUser)
-    db.collection('spotify-users').doc(data.user.id).update({
-        token,
+
+    const saveAPICalls = await db.doc(`users/${data.user.id}/${data.user.id}/analytics`).set({
         artistFollowing: data.userArtistFollowing,
         playlist: data.userPlaylist,
         topTracks: data.userTopTracks,
         topArtist: data.userTopArtist,
-        dateUpdated: new Date(),
-        filteredTracks: data.filteredTracks,
-        tracksThisMonth: data.filteredTracks.thisMonth,
-        tracksThisYear: data.filteredTracks.thisYear,
-        tracksLastYear: data.filteredTracks.lastYear
+        
+    });
+    
+    const saveFilteredData = await db.doc(`users/${data.user.id}/${data.user.id}/filteredData`).set({
+        tracksSavedThisMonth : data.filteredTracks.thisMonth,
+        tracksSavedThisYear : data.filteredTracks.thisYear,
+        tracksSavedlastYear : data.filteredTracks.lastYear,
     })
-    .then(response => {
-        console.log('user', response)
-        return response
-    })
-    .catch(err => console.log('ERROR saving user data to the db', err))
-  
 
-    return 'ok'
+    return db.collection('users').doc(data.user.id).update({
+        dateUpdated: new Date(),
+        token
+    }).then(response => {
+        console.log('response', response)
+        return response
+    }).catch(err => {
+        console.log('could not save to the database', err)
+    })
+
+    
+    
+}
+
+getSavedUserData = async() => {
+    const id = key.spotify['username']
+    const filteredData = await db.doc(`users/${id}/${id}/filteredData`).get().then(response => {
+        return response.data()
+    }).catch(err => {
+        console.log('ERROR Could not get user', err)
+    })
+
+    const analytics = await db.doc(`users/${id}/${id}/analytics`).get().then(response => {
+        return response.data()
+    }).catch(err => {
+        console.log('ERROR Could not get user', err)
+    })
+
+    
+
+    return {analytics, filteredData}
+
+    
 }
 
 
 module.exports = {
     searchDBForUser,
-    saveUserData
+    saveUserData,
+    getSavedUserData
 }
