@@ -26,7 +26,8 @@
     "querystring": "^0.2.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.5",
-    "spotify-web-api-node": "^4.0.0"
+    "spotify-web-api-node": "^4.0.0",
+    "write": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^5.12.0",

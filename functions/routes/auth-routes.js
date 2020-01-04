@@ -5,6 +5,8 @@ const request = require('request')
 const rp = require('request-promise');
 const searchUserDb = require('./db-user');
 const analyticsSearch = require('./collect-user-data')
+const filterData = require('./filter-data');
+const write = require('write');
 
 
 
@@ -50,25 +52,42 @@ router.post('/user', async (req, res) => {
       'Authorization': `Bearer ${req.body.token}`
     }
   };
-  
-   
-  const userInfo = await rp(options)
-  
 
-  
- const currentUser = await searchUserDb(JSON.parse(userInfo), req.body.token)
-//  const artistFollowing = await analyticsSearch.artistFollowing(currentUser.id, req.body.token)
-//  const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
- const savedTracks = await analyticsSearch.savedtracks(tracksOffset, req.body.token)
-  
-  
-  // res.send({hello: savedTracks})
-  res.send({hello: savedTracks})
-  
+
+  // const userInfo = await rp(options)
+
+  const userInfo = await rp(options)
+    .then(res => JSON.parse(res))
+    .catch(err => res.send(JSON.parse(err)))
+
+
+  //  const currentUser = await searchUserDb(userInfo, req.body.token)
+  //  const artistFollowing = await analyticsSearch.artistFollowing(currentUser.id, req.body.token)
+  //  const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
+  //  const savedTracks = await analyticsSearch.savedtracks(tracksOffset, req.body.token)
+
+
+  // TO BE ABLE TO TEST THE FILTER DATA FUNCTIONS, YOU MUST FIRST CREATE A DOCUMENT TO YOUR DIR WITH THIS CODE BELOW
+  // ONCE THE FILE IS CREATED, PLEASE COMMENT IT OUT AGAIN.
+  //  write('tracks.json', JSON.stringify(savedTracks), { overwrite: true }).then(response => {
+  //    res.send({hello: savedTracks})
+  //  })
+
+  // FOR DEVELOPMENT USE A SMALLER LIST SIZE: 50
+  // write('tracks-small.json', JSON.stringify(savedTracks), { overwrite: true }).then(response => {
+  //   res.send({hello: savedTracks})
+  // })
+
+
+  console.log('filter', filterData.tracksAddedThisMonth())
+
+  res.send({ hello: 'savedTracks' })
+
+
 })
 
 
-router.get('/logout',  (req, res) => {
+router.get('/logout', (req, res) => {
   res.send('ok')
   // res.redirect('http://localhost:5000/angular-532f5/us-central1/app/auth/logout-server');
 })
