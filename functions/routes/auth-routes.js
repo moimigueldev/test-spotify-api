@@ -3,7 +3,7 @@ const keys = require('../auth-config');
 
 const request = require('request')
 const rp = require('request-promise');
-const searchUserDb = require('./search-db-user');
+const searchUserDb = require('./db-user');
 const analyticsSearch = require('./collect-user-data')
 
 
