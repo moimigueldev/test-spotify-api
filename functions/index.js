@@ -23,7 +23,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-console.log('filter', filterData.tracksAdded())
+console.log('filter', filterData.userData())
 
 app.use('/auth', authRoutes)
 

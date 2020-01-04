@@ -75,11 +75,12 @@ router.post('/user', async (req, res) => {
   //  })
 
   
-
+  
 
   // console.log('filter', filterData.tracksAddedThisMonth())
 
-  res.send({ hello: 'savedTracks' })
+  // res.send({ hello: 'savedTracks' })
+  res.send(filterData.userData())
 
 
 })
