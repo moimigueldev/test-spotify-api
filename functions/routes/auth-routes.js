@@ -59,8 +59,7 @@ router.post('/user', async (req, res) => {
 //  const playlist = await analyticsSearch.playlist(currentUser.id, req.body.token)
 //  const savedTracks = await analyticsSearch.savedtracks(req.body.token)
   
-  // console.log(savedTracks)
-  // console.log(req.body, 'adf')
+  
   res.send({hello: userInfo})
   
 })
