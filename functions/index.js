@@ -6,6 +6,8 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors');
 
+const filterData = require('./routes/filter-data');
+
 const admin = require('firebase-admin');
 const serviceAccountKey = require('./ServiceAccountKey.json')
 
@@ -21,7 +23,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
+console.log('filter', filterData.tracksAdded())
 
 app.use('/auth', authRoutes)
 

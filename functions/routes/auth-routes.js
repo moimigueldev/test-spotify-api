@@ -58,7 +58,7 @@ router.post('/user', async (req, res) => {
 
   const userInfo = await rp(options)
     .then(res => JSON.parse(res))
-    .catch(err => res.send(JSON.parse(err)))
+    .catch(err => res.send(err))
 
 
   //  const currentUser = await searchUserDb(userInfo, req.body.token)
@@ -69,17 +69,15 @@ router.post('/user', async (req, res) => {
 
   // TO BE ABLE TO TEST THE FILTER DATA FUNCTIONS, YOU MUST FIRST CREATE A DOCUMENT TO YOUR DIR WITH THIS CODE BELOW
   // ONCE THE FILE IS CREATED, PLEASE COMMENT IT OUT AGAIN.
+  // FOR DEVELOPMENT USE A SMALLER LIST SIZE: 20
   //  write('tracks.json', JSON.stringify(savedTracks), { overwrite: true }).then(response => {
   //    res.send({hello: savedTracks})
   //  })
 
-  // FOR DEVELOPMENT USE A SMALLER LIST SIZE: 50
-  // write('tracks-small.json', JSON.stringify(savedTracks), { overwrite: true }).then(response => {
-  //   res.send({hello: savedTracks})
-  // })
+  
 
 
-  console.log('filter', filterData.tracksAddedThisMonth())
+  // console.log('filter', filterData.tracksAddedThisMonth())
 
   res.send({ hello: 'savedTracks' })
 

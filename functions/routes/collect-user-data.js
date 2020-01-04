@@ -22,7 +22,7 @@ playlist = async (id, token) => {
 
   const options = {
     'method': 'GET',
-    'url': `https://api.spotify.com/v1/users/${id}/playlists?limit=20`,
+    'url': `https://api.spotify.com/v1/users/${id}/playlists?limit=50`,
     'headers': {
       'Authorization': `Bearer ${token}`
     }
@@ -46,12 +46,12 @@ savedtracks = async (offset, token) => {
 
   tracks.items.length ? tracksList.push(...tracks.items) : null;
 
-  // if (offset !== tracks.total) {
+  if (offset !== tracks.total) {
 
-  //   offset = tracks.total - offset >= 50 ? offset + 50 : (tracks.total - offset) + offset
+    offset = tracks.total - offset >= 50 ? offset + 50 : (tracks.total - offset) + offset
 
-  //   return savedtracks(offset, token)
-  // }
+    return savedtracks(offset, token)
+  }
 
   return tracksList
 }
