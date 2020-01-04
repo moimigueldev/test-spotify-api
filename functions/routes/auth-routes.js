@@ -8,8 +8,6 @@ const analyticsSearch = require('./collect-user-data')
 const filterData = require('./filter-data');
 const write = require('write');
 
-
-
 const SpotifyWebApi = require('spotify-web-api-node');
 
 
@@ -41,11 +39,31 @@ router.get('/spotify/callback', (req, res) => {
   // res.redirect('https://onsnip.com/dashboard')
 });
 
+router.post('/loginUser', async(req, res) => {
+  const options = {
+    url: 'https://api.spotify.com/v1/me',
+    headers: {
+      'Authorization': `Bearer ${req.body.token}`
+    }
+  };
 
+
+
+  const userInfo = await rp(options)
+    .then(res => JSON.parse(res))
+    .catch(err => console.log('err', err))
+
+    userDB.searchDBForUser(userInfo, req.body.token).then(response => {
+     res.send(response)
+    })
+    .catch(err => console.log('Error Login in user', err))
+    
+
+
+})//end of login in user
 
 router.post('/user', async (req, res) => {
 
-  console.log('user')
   const options = {
     url: 'https://api.spotify.com/v1/me',
     headers: {
@@ -65,14 +83,9 @@ router.post('/user', async (req, res) => {
 
 
   userDB.saveUserData(userData, req.body.token).then(response => {
-    
     res.send(userData)
   })
-  // .catch(err => console.log('Error Saving User to the db', err))
-
-  // res.send(userData)
-
-
+  .catch(err => console.log('Error Saving User to the db', err))
 
   // TO BE ABLE TO TEST THE FILTER DATA FUNCTIONS, YOU MUST FIRST CREATE A DOCUMENT TO YOUR DIR WITH THIS CODE BELOW
   // ONCE THE FILE IS CREATED, PLEASE COMMENT IT OUT AGAIN.
@@ -81,22 +94,7 @@ router.post('/user', async (req, res) => {
   //    res.send({hello: savedTracks})
   //  })
 
-  
-
-
-
-
-  
- 
-
 })
-
-
-router.get('/logout', (req, res) => {
-  res.send('ok')
-  // res.redirect('http://localhost:5000/angular-532f5/us-central1/app/auth/logout-server');
-})
-
 
 router.get('/savedUser', (req, res) => {
   userDB.getSavedUserData().then(response => {
@@ -104,6 +102,12 @@ router.get('/savedUser', (req, res) => {
     res.send(response)
   })
   
+})
+
+
+router.get('/logout', (req, res) => {
+  console.log('ok', req.cookie['loggedIn'])
+ res.send({hello: req.cookie['loggedIn']})
 })
 
 

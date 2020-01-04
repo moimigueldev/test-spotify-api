@@ -34,8 +34,6 @@ searchDBForUser = async (userLoggedIn, token) => {
 
 
 saveUserData = async(data, token) => {
-    // console.log('user', data)
-
     const saveAPICalls = await db.doc(`users/${data.user.id}/${data.user.id}/analytics`).set({
         artistFollowing: data.userArtistFollowing,
         playlist: data.userPlaylist,
@@ -54,7 +52,6 @@ saveUserData = async(data, token) => {
         dateUpdated: new Date(),
         token
     }).then(response => {
-        console.log('response', response)
         return response
     }).catch(err => {
         console.log('could not save to the database', err)
