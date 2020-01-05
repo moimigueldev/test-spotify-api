@@ -35,7 +35,7 @@ router.get('/login', (req, res) => {
 
 
 router.get('/spotify/callback', (req, res) => {
-  res.redirect('http://localhost:4200/dashboard')
+  res.redirect('http://localhost:4200/login-redirect')
   // res.redirect('https://onsnip.com/dashboard')
 });
 
@@ -96,11 +96,13 @@ router.post('/user', async (req, res) => {
 
 })
 
-router.get('/savedUser', (req, res) => {
-  userDB.getSavedUserData().then(response => {
-    console.log('this is the response', response);
+router.post('/savedUser', (req, res) => {
+  const cookie = req.body.cookie
+
+  userDB.getSavedUserData(cookie).then(response => {
     res.send(response)
   })
+
   
 })
 

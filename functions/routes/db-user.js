@@ -61,8 +61,8 @@ saveUserData = async(data, token) => {
     
 }
 
-getSavedUserData = async() => {
-    const id = key.spotify['username']
+getSavedUserData = async(cookie) => {
+    const id = cookie.id
     const filteredData = await db.doc(`users/${id}/${id}/filteredData`).get().then(response => {
         return response.data()
     }).catch(err => {
@@ -78,6 +78,8 @@ getSavedUserData = async() => {
     
 
     return {analytics, filteredData}
+
+    
 
     
 }

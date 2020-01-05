@@ -37,9 +37,9 @@ userData = (list) => {
 
     const artistSorted = Object.keys(artistsList).sort(function (a, b) { return artistsList[a] - artistsList[b] }).reverse()
 
-   
+    artistSorted = returnSortedArtistValues(artistSorted.reverse(), artistsList)
 
-    return {thisMonth, thisYear, lastYear, artistSorted}
+    return {thisMonth, thisYear, lastYear, artistSorted }
 }
 
 // this sniped gives the sorted list the object values back, might not be necessery
