@@ -2,9 +2,6 @@ const admin = require('firebase-admin');
 const serviceAccountKey = require('.././ServiceAccountKey.json')
 const key = require('../auth-config')
 
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccountKey)
-// });
 
 const db = admin.firestore();
 
@@ -46,7 +43,7 @@ saveUserData = async(data, token) => {
         tracksSavedThisMonth : data.filteredTracks.thisMonth,
         tracksSavedThisYear : data.filteredTracks.thisYear,
         tracksSavedlastYear : data.filteredTracks.lastYear,
-        mostListenedArtist: data.filteredTracks.artistSorted
+        mostListenedArtist: data.filteredTracks.finalList
     })
 
     return db.collection('users').doc(data.user.id).update({

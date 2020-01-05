@@ -1,48 +1,22 @@
 const router = require('express').Router();
 const keys = require('../auth-config');
-
-const request = require('request')
 const rp = require('request-promise');
 const userDB = require('./db-user');
 const analyticsSearch = require('./collect-user-data')
-const filterData = require('./filter-data');
-const write = require('write');
-const cacheControl = require('express-cache-controller');
+const cache = require('./cache-routes')
+const SpotifyWebApi = require('spotify-web-api-node');
 var mcache = require('memory-cache');
 
-const SpotifyWebApi = require('spotify-web-api-node');
 
+const scopes = keys.spotify['scopes'];
 
-const scopes = ['user-top-read', 'user-read-recently-played', 'user-follow-read', 'user-library-read']
-
+console.log('ok', mcache.keys())
 
 const spotifyApi = new SpotifyWebApi({
   clientId: keys.spotify['client-id'],
   clientSecret: keys.spotify['client-secret'],
   redirectUri: encodeURIComponent(keys.spotify['redirect-url']),
 });
-
-const cache = (duration) => {
-  return (req, res, next) => {
-    let key = '__express__' + req.originalUrl || req.url
-    let cachedBody = mcache.get(key)
-    // console.log('cached-boyd', cachedBody)
-    if (cachedBody) {
-      res.send(cachedBody)
-      return
-    } else {
-      res.sendResponse = res.send
-      res.send = (body) => {
-        mcache.put(key, body, duration * 1000);
-        res.sendResponse(body)
-      }
-      next()
-    }
-  }
-}
-
-
-
 
 
 router.get('/login', (req, res) => {
@@ -54,13 +28,10 @@ router.get('/login', (req, res) => {
 
 
 router.get('/spotify/callback', (req, res) => {
-  res.redirect('http://localhost:4200/login-redirect')
-  // res.redirect('https://onsnip.com/dashboard')
+  res.redirect(keys.routes['redirect-url'])
 });
 
 router.post('/loginUser', async (req, res) => {
-
-
 
   const options = {
     url: 'https://api.spotify.com/v1/me',
@@ -98,8 +69,6 @@ router.post('/user', async (req, res) => {
     }
   };
 
-
-
   const userInfo = await rp(options)
     .then(res => JSON.parse(res))
     .catch(err => res.send(err))
@@ -128,12 +97,11 @@ router.post('/user', async (req, res) => {
 router.post('/savedUser', cache(960000), (req, res) => {
   const cookie = req.body.cookie
 
-
-
   userDB.getSavedUserData(cookie).then(response => {
-    console.log('not aching')
     res.send(response)
   })
+
+  
 
 
 
@@ -141,8 +109,10 @@ router.post('/savedUser', cache(960000), (req, res) => {
 
 
 router.get('/logout', (req, res) => {
-  console.log('ok', req.cookie['loggedIn'])
-  res.send({ hello: req.cookie['loggedIn'] })
+  if(mcache.keys().length) {
+    mcache.clear();
+  }
+  res.send('200')
 })
 
 

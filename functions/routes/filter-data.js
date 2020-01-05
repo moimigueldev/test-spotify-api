@@ -2,7 +2,6 @@
 const tracks = require('../tracks')
 const moment = require('moment');
 
-console.log('tracks', tracks.length)
 
 userData = (list) => {
     const date = moment().format().toString().split('-');
@@ -39,19 +38,24 @@ userData = (list) => {
 
 
     // artistSorted = returnSortedArtistValues(artistSorted.reverse(), artistsList)
-    artistSorted = returnSortedArtistValues(artistSorted, artistsList)
- 
-    return {thisMonth, thisYear, lastYear, artistSorted }
+    const finalList  = returnSortedArtistValues(artistSorted, artistsList)
+    // console.log('sorted', artistSorted)
+    return {thisMonth, thisYear, lastYear, finalList }
 }
 
 // this sniped gives the sorted list the object values back, might not be necessery
 returnSortedArtistValues = (list, original) => {
     const finalArtistList = {}
-    list.forEach(el => {
-        
+    const finalList = [];
+    for (let el of list) {
+        if (original[el] === 1) {
+            break
+        }
         finalArtistList[el] = original[el];
-    })
-    return finalArtistList;
+
+        finalList.push({ artist: el, total: original[el] })
+    }
+    return finalList;
 }
 
 
