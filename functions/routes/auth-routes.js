@@ -130,10 +130,8 @@ router.post('/user', async (req, res) => {
 })
 
 // 960,000
+// 16 mins
 router.post('/savedUser', cache(960000), (req, res) => {
-  // res.set('Cache-Control', `public, max-age=${24 * 60 * 60 * 1000}, s-maxage=${24 * 60 * 60 * 1000}`)
-  // res.set('Cache-Control', `public, max-age=300, s-maxage=600`)
-  console.log(24 * 60 * 60 * 1000)
   const cookie = req.body.cookie
 
   
@@ -143,7 +141,6 @@ router.post('/savedUser', cache(960000), (req, res) => {
     res.send(response)
   })
 
-  // res.send({ok: `${Date.now()}`})
 
   
 })
