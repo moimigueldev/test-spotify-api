@@ -1,5 +1,6 @@
 const rp = require('request-promise');
 const filterData = require('./filter-data');
+const write = require('write')
 
 artistFollowing = async (token) => {
   const options = {
@@ -40,12 +41,15 @@ savedtracks = async (offset, token) => {
 
   tracks.items.length ? tracksList.push(...tracks.items) : null;
 
+  offset !== tracks.total
   if (offset !== tracks.total) {
 
     offset = tracks.total - offset >= 50 ? offset + 50 : (tracks.total - offset) + offset
 
     return savedtracks(offset, token)
   }
+
+
 
   return tracksList
 }
