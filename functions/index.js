@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const filterData = require('./routes/filter-data');
+const cacheControl = require('express-cache-controller')
 
 
 const admin = require('firebase-admin');
@@ -16,29 +17,10 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccountKey)
 });
 
-
+// app.use(cacheControl({maxAge:24 * 60 * 60 * 1000, noCache: true}))
 app.use(cookieParser())
 
 // set a cookie
-app.use(function (req, res, next) {
-    // check if client sent cookie
-    var cookie = req.cookies.cookieName;
-    console.log('cookie',  req.cookie)
-    // if (cookie === undefined)
-    // {
-    //   // no: set a new cookie
-    //   var randomNumber=Math.random().toString();
-    //   randomNumber=randomNumber.substring(2,randomNumber.length);
-    //   res.cookie('cookieName',randomNumber, { maxAge: 900000, httpOnly: true });
-    //   console.log('cookie created successfully');
-    // } 
-    // else
-    // {
-    //   // yes, cookie was already present 
-    //   console.log('cookie exists', cookie);
-    // } 
-    next(); // <-- important!
-  });
 
 
 
