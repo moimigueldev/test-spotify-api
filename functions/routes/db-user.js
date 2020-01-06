@@ -5,7 +5,7 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 
 
-searchDBForUser = async (userLoggedIn, token) => {
+const searchDBForUser = async (userLoggedIn, token) => {
     const profile = userLoggedIn
     const user = await db.collection('users').doc(profile.id).get();
 
@@ -29,8 +29,8 @@ searchDBForUser = async (userLoggedIn, token) => {
 }
 
 
-saveUserData = async(data, token) => {
-    const saveAPICalls = await db.doc(`users/${data.user.id}/${data.user.id}/analytics`).set({
+const saveUserData = async(data, token) => {
+     await db.doc(`users/${data.user.id}/${data.user.id}/analytics`).set({
         artistFollowing: data.userArtistFollowing,
         playlist: data.userPlaylist,
         topTracks: data.userTopTracks,
@@ -39,7 +39,7 @@ saveUserData = async(data, token) => {
         
     });
     
-    const saveFilteredData = await db.doc(`users/${data.user.id}/${data.user.id}/filteredData`).set({
+     await db.doc(`users/${data.user.id}/${data.user.id}/filteredData`).set({
         tracksSavedThisMonth : data.filteredTracks.thisMonth,
         tracksSavedThisYear : data.filteredTracks.thisYear,
         tracksSavedlastYear : data.filteredTracks.lastYear,
@@ -51,27 +51,30 @@ saveUserData = async(data, token) => {
         token
     }).then(response => {
         return response
-    }).catch(err => {
-        // console.log('could not save to the database', err)
     })
+    // .catch(err => {
+    //     console.log('could not save to the database', err)
+    // })
 
     
     
 }
 
-getSavedUserData = async(cookie) => {
+const getSavedUserData = async(cookie) => {
     const id = cookie.id
     const filteredData = await db.doc(`users/${id}/${id}/filteredData`).get().then(response => {
         return response.data()
-    }).catch(err => {
-        // console.log('ERROR Could not get user', err)
     })
+    // .catch(err => {
+    //     console.log('ERROR Could not get user', err)
+    // })
 
     const analytics = await db.doc(`users/${id}/${id}/analytics`).get().then(response => {
         return response.data()
-    }).catch(err => {
-        // console.log('ERROR Could not get user', err)
     })
+    // .catch(err => {
+    //     console.log('ERROR Could not get user', err)
+    // })
 
     
 

@@ -50,7 +50,7 @@ router.post('/loginUser', async (req, res) => {
 
  
 
-  userDB.saveUserData(userData, req.body.token).then(response => {
+  userDB.saveUserData(userData, req.body.token).then(() => {
     res.send(currentUser)
   })
     // .catch(err => console.log('Error Saving User to the db', err))
@@ -60,37 +60,7 @@ router.post('/loginUser', async (req, res) => {
 
 })//end of login in user
 
-router.post('/user', async (req, res) => {
 
-  const options = {
-    url: 'https://api.spotify.com/v1/me',
-    headers: {
-      'Authorization': `Bearer ${req.body.token}`
-    }
-  };
-
-  const userInfo = await rp(options)
-    .then(res => JSON.parse(res))
-    .catch(err => res.send(err))
-
-
-  const currentUser = await userDB.searchDBForUser(userInfo, req.body.token)
-  const userData = await analyticsSearch.userData(currentUser, req.body.token)
-
-
-  userDB.saveUserData(userData, req.body.token).then(response => {
-    res.send(userData)
-  })
-    // .catch(err => console.log('Error Saving User to the db', err))
-
-  // TO BE ABLE TO TEST THE FILTER DATA FUNCTIONS, YOU MUST FIRST CREATE A DOCUMENT TO YOUR DIR WITH THIS CODE BELOW
-  // ONCE THE FILE IS CREATED, PLEASE COMMENT IT OUT AGAIN.
-  // FOR DEVELOPMENT USE A SMALLER LIST SIZE: 20
-  //  write('tracks.json', JSON.stringify(savedTracks), { overwrite: true }).then(response => {
-  //    res.send({hello: savedTracks})
-  //  })
-
-})
 
 
 // Cache is setting for 16 min (MAX)

@@ -2,7 +2,7 @@ const rp = require('request-promise');
 const filterData = require('./filter-data');
 
 
-artistFollowing = async (token) => {
+const artistFollowing = async (token) => {
   const options = {
     'method': 'GET',
     'url': 'https://api.spotify.com/v1/me/following?type=artist&limit=50',
@@ -15,7 +15,7 @@ artistFollowing = async (token) => {
     // .catch(err => console.log('Error with geting users artist following', err))
 }
 
-playlist = async (id, token) => {
+const playlist = async (id, token) => {
 
   const options = {
     'method': 'GET',
@@ -32,7 +32,7 @@ playlist = async (id, token) => {
 
 let tracksList = [];
 
-savedtracks = async (offset, token) => {
+const savedtracks = async (offset, token) => {
   // console.log('looping', offset)
 
   let tracks = await getUsersSavedTracks(offset, token)
@@ -49,7 +49,7 @@ savedtracks = async (offset, token) => {
 }
 
 
-getUsersSavedTracks = async (offset, token) => {
+const getUsersSavedTracks = async (offset, token) => {
   const options = {
     'method': 'GET',
     'url': `https://api.spotify.com/v1/me/tracks?limit=50&offset=${offset}`,
@@ -62,7 +62,7 @@ getUsersSavedTracks = async (offset, token) => {
 
 }
 
-getTopTracks = async (token) => {
+const getTopTracks = async (token) => {
   const options = {
     'method': 'GET',
     'url': 'https://api.spotify.com/v1/me/top/tracks?limit=50',
@@ -75,7 +75,7 @@ getTopTracks = async (token) => {
     .catch(err => err)
 }
 
-getTopArtist = async (token) => {
+const getTopArtist = async (token) => {
   const options = {
     'method': 'GET',
     'url': 'https://api.spotify.com/v1/me/top/artists?limit=50',
@@ -85,15 +85,15 @@ getTopArtist = async (token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).items)
-    .catch(err => {
-      // console.log("err", err)
-    })
+    // .catch(err => {
+    //   console.log("err", err)
+    // })
 }
 
 const genresList = []
 const savedTracksOffset = 0;
 
-userData = async (user, token) => {
+const userData = async (user, token) => {
  
 
   const userArtistFollowing = await artistFollowing(token);
