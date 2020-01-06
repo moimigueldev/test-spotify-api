@@ -39,7 +39,7 @@ router.post('/loginUser', async (req, res) => {
     url: 'https://api.spotify.com/v1/me',
     headers: {
       'Authorization': `Bearer ${req.body.token}`,
-      'Access-Control-Allow-Origin': 'https://onsnip.com'
+      'Access-Control-Allow-Origin':  keys.cors['spotify-header']
     }
   };
 

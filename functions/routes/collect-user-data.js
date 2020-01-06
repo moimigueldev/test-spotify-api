@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+const keys = require('../auth-config')
 const filterData = require('./filter-data');
 
 
@@ -8,7 +9,7 @@ const artistFollowing = async (token) => {
     'url': 'https://api.spotify.com/v1/me/following?type=artist&limit=50',
     'headers': {
       'Authorization': `Bearer ${token}`,
-      'Access-Control-Allow-Origin': 'https://onsnip.com'
+      'Access-Control-Allow-Origin': keys.cors['spotify-header']
     }
   };
 
@@ -23,7 +24,7 @@ const playlist = async (id, token) => {
     'url': `https://api.spotify.com/v1/users/${id}/playlists?limit=50`,
     'headers': {
       'Authorization': `Bearer ${token}`,
-      'Access-Control-Allow-Origin': 'https://onsnip.com'
+      'Access-Control-Allow-Origin': keys.cors['spotify-header']
     }
   };
 
@@ -57,7 +58,7 @@ const getUsersSavedTracks = async (offset, token) => {
     'url': `https://api.spotify.com/v1/me/tracks?limit=50&offset=${offset}`,
     'headers': {
       'Authorization': `Bearer ${token}`,
-      'Access-Control-Allow-Origin': 'https://onsnip.com'
+      'Access-Control-Allow-Origin': keys.cors['spotify-header']
     }
   };
 
@@ -71,7 +72,7 @@ const getTopTracks = async (token) => {
     'url': 'https://api.spotify.com/v1/me/top/tracks?limit=50',
     'headers': {
       'Authorization': `Bearer ${token}`,
-      'Access-Control-Allow-Origin': 'https://onsnip.com'
+      'Access-Control-Allow-Origin': keys.cors['spotify-header']
     }
   };
 
@@ -85,7 +86,7 @@ const getTopArtist = async (token) => {
     'url': 'https://api.spotify.com/v1/me/top/artists?limit=50',
     'headers': {
       'Authorization': `Bearer ${token}`,
-      'Access-Control-Allow-Origin': 'https://onsnip.com'
+      'Access-Control-Allow-Origin': keys.cors['spotify-header']
     }
   };
 
