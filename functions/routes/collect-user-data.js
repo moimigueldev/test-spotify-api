@@ -7,7 +7,8 @@ const artistFollowing = async (token) => {
     'method': 'GET',
     'url': 'https://api.spotify.com/v1/me/following?type=artist&limit=50',
     'headers': {
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Access-Control-Allow-Origin': 'https://onsnip.com'
     }
   };
 
@@ -21,7 +22,8 @@ const playlist = async (id, token) => {
     'method': 'GET',
     'url': `https://api.spotify.com/v1/users/${id}/playlists?limit=50`,
     'headers': {
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Access-Control-Allow-Origin': 'https://onsnip.com'
     }
   };
 
@@ -54,7 +56,8 @@ const getUsersSavedTracks = async (offset, token) => {
     'method': 'GET',
     'url': `https://api.spotify.com/v1/me/tracks?limit=50&offset=${offset}`,
     'headers': {
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Access-Control-Allow-Origin': 'https://onsnip.com'
     }
   };
 
@@ -67,7 +70,8 @@ const getTopTracks = async (token) => {
     'method': 'GET',
     'url': 'https://api.spotify.com/v1/me/top/tracks?limit=50',
     'headers': {
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Access-Control-Allow-Origin': 'https://onsnip.com'
     }
   };
 
@@ -80,7 +84,8 @@ const getTopArtist = async (token) => {
     'method': 'GET',
     'url': 'https://api.spotify.com/v1/me/top/artists?limit=50',
     'headers': {
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Access-Control-Allow-Origin': 'https://onsnip.com'
     }
   };
 

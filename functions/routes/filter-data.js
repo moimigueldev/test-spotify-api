@@ -3,7 +3,7 @@
 const moment = require('moment');
 
 
-userData = (list) => {
+const userData = (list) => {
     const date = moment().format().toString().split('-');
     const thisYear = [];
     const lastYear = [];
@@ -44,7 +44,7 @@ userData = (list) => {
 }
 
 // this sniped gives the sorted list the object values back, might not be necessery
-returnSortedArtistValues = (list, original) => {
+const returnSortedArtistValues = (list, original) => {
     const finalArtistList = {}
     const finalList = [];
     for (let el of list) {
@@ -60,7 +60,7 @@ returnSortedArtistValues = (list, original) => {
 
 
 
-mergeGenresList = (list) => {
+const mergeGenresList = (list) => {
     const genres = [];
     const finalList =  []
     const newList = ','+list.join(',') + ','

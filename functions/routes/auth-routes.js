@@ -6,6 +6,7 @@ const analyticsSearch = require('./collect-user-data')
 const cache = require('./cache-routes')
 const SpotifyWebApi = require('spotify-web-api-node');
 var mcache = require('memory-cache');
+// const cors = require('cors')
 
 
 const scopes = keys.spotify['scopes'];
@@ -33,10 +34,12 @@ router.get('/spotify/callback', (req, res) => {
 
 router.post('/loginUser', async (req, res) => {
 
+
   const options = {
     url: 'https://api.spotify.com/v1/me',
     headers: {
-      'Authorization': `Bearer ${req.body.token}`
+      'Authorization': `Bearer ${req.body.token}`,
+      'Access-Control-Allow-Origin': 'https://onsnip.com'
     }
   };
 
