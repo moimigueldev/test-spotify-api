@@ -6,8 +6,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const admin = require('firebase-admin');
 const serviceAccountKey = require('./ServiceAccountKey.json')
-const filteredData = require('./routes/filter-data')
-const data = require('./routes/collect-user-data')  
+// const filteredData = require('./routes/filter-data')
+// const data = require('./routes/collect-user-data')  
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccountKey)
 });

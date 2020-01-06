@@ -1,6 +1,5 @@
 const admin = require('firebase-admin');
-const serviceAccountKey = require('.././ServiceAccountKey.json')
-const key = require('../auth-config')
+
 
 
 const db = admin.firestore();
@@ -11,7 +10,7 @@ searchDBForUser = async (userLoggedIn, token) => {
     const user = await db.collection('users').doc(profile.id).get();
 
     if (!user.data()) { //does not exist yet
-        console.log('creating new user');
+        // console.log('creating new user');
         const newUser = {
             id: profile.id,
             dateUpdated: new Date(),
@@ -53,7 +52,7 @@ saveUserData = async(data, token) => {
     }).then(response => {
         return response
     }).catch(err => {
-        console.log('could not save to the database', err)
+        // console.log('could not save to the database', err)
     })
 
     
@@ -65,13 +64,13 @@ getSavedUserData = async(cookie) => {
     const filteredData = await db.doc(`users/${id}/${id}/filteredData`).get().then(response => {
         return response.data()
     }).catch(err => {
-        console.log('ERROR Could not get user', err)
+        // console.log('ERROR Could not get user', err)
     })
 
     const analytics = await db.doc(`users/${id}/${id}/analytics`).get().then(response => {
         return response.data()
     }).catch(err => {
-        console.log('ERROR Could not get user', err)
+        // console.log('ERROR Could not get user', err)
     })
 
     

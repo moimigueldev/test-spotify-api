@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const filterData = require('./filter-data');
-const write = require('write')
+
 
 artistFollowing = async (token) => {
   const options = {
@@ -12,7 +12,7 @@ artistFollowing = async (token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).artists.items)
-    .catch(err => console.log('Error with geting users artist following', err))
+    // .catch(err => console.log('Error with geting users artist following', err))
 }
 
 playlist = async (id, token) => {
@@ -26,14 +26,14 @@ playlist = async (id, token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).items)
-    .catch(err => console.log('Error with getting the user\'s Playlist', err))
+    // .catch(err => console.log('Error with getting the user\'s Playlist', err))
 
 }
 
 let tracksList = [];
 
 savedtracks = async (offset, token) => {
-  console.log('looping', offset)
+  // console.log('looping', offset)
 
   let tracks = await getUsersSavedTracks(offset, token)
   tracks = JSON.parse(tracks)
@@ -86,7 +86,7 @@ getTopArtist = async (token) => {
 
   return rp(options).then(response => JSON.parse(response).items)
     .catch(err => {
-      console.log("err", err)
+      // console.log("err", err)
     })
 }
 
@@ -122,39 +122,11 @@ userData = async (user, token) => {
 }
 
 
-// userData = async (user, token) => {
-//   // const id = 'moiscmigu'
-//   // const tokeN = 'BQAfKTOq79hJcyDXUmbYrpmuBJQym8BAMO2zcSeJgRNSLRY9AyoQl7Ik0LRiFK19BYF2Yg1p7jOh1b6egWTMXpTSFBZVkIJSZtNnHn_VvGlIx9Vpb2zjgT5lEG'
-
-//   // write('tracks.json', JSON.stringify(savedTracks), { overwrite: true }).then(response => {
-//   //      res.send({hello: savedTracks})
-//   //    })
-
-//   const userArtistFollowing = await artistFollowing(token);
-//   const userPlaylist = await playlist(user.id, token);
-//   const userSavedTracks = await savedtracks(savedTracksOffset, token)
-//   const filteredTracks = filterData.userData(userSavedTracks)
-//   const userTopTracks = await getTopTracks(token)
-//   const userTopArtist = await getTopArtist(token)
-
-
-//   return {
-//     userArtistFollowing,
-//     userPlaylist,
-//     // userSavedTracks,
-//     filteredTracks,
-//     userTopTracks,
-//     userTopArtist,
-//     user
-//   }
-// }
-
 
 const getGenres = (list) => {
   for (const el of list) {
     genresList.push(...el.genres)
   }
-  // return genresList
 }
 
 

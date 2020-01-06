@@ -10,7 +10,7 @@ var mcache = require('memory-cache');
 
 const scopes = keys.spotify['scopes'];
 
-console.log('ok', mcache.keys())
+
 
 const spotifyApi = new SpotifyWebApi({
   clientId: keys.spotify['client-id'],
@@ -42,7 +42,7 @@ router.post('/loginUser', async (req, res) => {
 
   const userInfo = await rp(options)
     .then(res => JSON.parse(res))
-    .catch(err => console.log('err', err))
+    // .catch(err => console.log('err', err))
 
 
   const currentUser = await userDB.searchDBForUser(userInfo, req.body.token)
@@ -53,7 +53,7 @@ router.post('/loginUser', async (req, res) => {
   userDB.saveUserData(userData, req.body.token).then(response => {
     res.send(currentUser)
   })
-    .catch(err => console.log('Error Saving User to the db', err))
+    // .catch(err => console.log('Error Saving User to the db', err))
 
 
 
@@ -81,7 +81,7 @@ router.post('/user', async (req, res) => {
   userDB.saveUserData(userData, req.body.token).then(response => {
     res.send(userData)
   })
-    .catch(err => console.log('Error Saving User to the db', err))
+    // .catch(err => console.log('Error Saving User to the db', err))
 
   // TO BE ABLE TO TEST THE FILTER DATA FUNCTIONS, YOU MUST FIRST CREATE A DOCUMENT TO YOUR DIR WITH THIS CODE BELOW
   // ONCE THE FILE IS CREATED, PLEASE COMMENT IT OUT AGAIN.
