@@ -59,4 +59,24 @@ returnSortedArtistValues = (list, original) => {
 }
 
 
-module.exports = {userData}
+
+mergeGenresList = (list) => {
+    const genres = [];
+    const finalList =  []
+    const newList = ','+list.join(',') + ','
+  
+    list.map(el => {
+        const regex = new RegExp(`,${el},`, 'g');
+        if(!genres.includes(el)) {
+            finalList.push({name: el, total: newList.match(regex).length})
+            genres.push(el)
+        }
+    });
+
+    return finalList.sort((a, b) => b.total-a.total);
+    
+    
+}
+
+
+module.exports = {userData, mergeGenresList}

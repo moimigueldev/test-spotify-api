@@ -36,6 +36,7 @@ saveUserData = async(data, token) => {
         playlist: data.userPlaylist,
         topTracks: data.userTopTracks,
         topArtist: data.userTopArtist,
+        topGenres: data.topGenres,
         
     });
     

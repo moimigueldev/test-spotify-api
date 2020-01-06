@@ -6,7 +6,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const admin = require('firebase-admin');
 const serviceAccountKey = require('./ServiceAccountKey.json')
-// const filteredData = require('./routes/filter-data')
+const filteredData = require('./routes/filter-data')
+const data = require('./routes/collect-user-data')  
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccountKey)
 });
@@ -17,20 +18,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
+
+
 // ROUTES
 
 const authRoutes = require('./routes/auth-routes');
 
-
-
-
-
-
-
-
-
-
-// console.log('filter', filteredData.userData())
 
 app.use('/auth', authRoutes)
 
@@ -38,9 +31,5 @@ app.use('/auth', authRoutes)
 app.get('/', (req, res) => {
     res.send('ok')
 })
-
-
-
-
 
 exports.app = functions.https.onRequest(app);

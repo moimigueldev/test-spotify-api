@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const filterData = require('./filter-data');
-// const write = require('write')
+const write = require('write')
 
 artistFollowing = async (token) => {
   const options = {
@@ -12,7 +12,7 @@ artistFollowing = async (token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).artists.items)
-  .catch(err => console.log('Error with geting users artist following', err))
+    .catch(err => console.log('Error with geting users artist following', err))
 }
 
 playlist = async (id, token) => {
@@ -26,7 +26,7 @@ playlist = async (id, token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).items)
-  .catch(err => console.log('Error with getting the user\'s Playlist', err))
+    .catch(err => console.log('Error with getting the user\'s Playlist', err))
 
 }
 
@@ -38,18 +38,12 @@ savedtracks = async (offset, token) => {
   let tracks = await getUsersSavedTracks(offset, token)
   tracks = JSON.parse(tracks)
 
-
   tracks.items.length ? tracksList.push(...tracks.items) : null;
 
-  
   if (offset !== tracks.total) {
-
     offset = tracks.total - offset >= 50 ? offset + 50 : (tracks.total - offset) + offset
-
     return savedtracks(offset, token)
   }
-
-
 
   return tracksList
 }
@@ -64,7 +58,7 @@ getUsersSavedTracks = async (offset, token) => {
     }
   };
 
-    return rp(options)
+  return rp(options)
 
 }
 
@@ -78,7 +72,7 @@ getTopTracks = async (token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).items)
-  .catch(err => err)
+    .catch(err => err)
 }
 
 getTopArtist = async (token) => {
@@ -91,30 +85,78 @@ getTopArtist = async (token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).items)
-  .catch(err => {
-    console.log("err", err)
-  })
+    .catch(err => {
+      console.log("err", err)
+    })
 }
 
-
+const genresList = []
 const savedTracksOffset = 0;
-userData = async(user, token) => {
+
+userData = async (user, token) => {
+ 
+
   const userArtistFollowing = await artistFollowing(token);
+  getGenres(userArtistFollowing)
+  const userTopArtist = await getTopArtist(token)
+  getGenres(userTopArtist)
+  const topGenres = filterData.mergeGenresList(genresList)
+
+
   const userPlaylist = await playlist(user.id, token);
   const userSavedTracks = await savedtracks(savedTracksOffset, token)
   const filteredTracks = filterData.userData(userSavedTracks)
   const userTopTracks = await getTopTracks(token)
-  const userTopArtist = await getTopArtist(token)
+
+
   return {
-    userArtistFollowing, 
+    userArtistFollowing,
     userPlaylist,
     // userSavedTracks,
     filteredTracks,
     userTopTracks,
     userTopArtist,
-    user
+    user,
+    topGenres
   }
 }
+
+
+// userData = async (user, token) => {
+//   // const id = 'moiscmigu'
+//   // const tokeN = 'BQAfKTOq79hJcyDXUmbYrpmuBJQym8BAMO2zcSeJgRNSLRY9AyoQl7Ik0LRiFK19BYF2Yg1p7jOh1b6egWTMXpTSFBZVkIJSZtNnHn_VvGlIx9Vpb2zjgT5lEG'
+
+//   // write('tracks.json', JSON.stringify(savedTracks), { overwrite: true }).then(response => {
+//   //      res.send({hello: savedTracks})
+//   //    })
+
+//   const userArtistFollowing = await artistFollowing(token);
+//   const userPlaylist = await playlist(user.id, token);
+//   const userSavedTracks = await savedtracks(savedTracksOffset, token)
+//   const filteredTracks = filterData.userData(userSavedTracks)
+//   const userTopTracks = await getTopTracks(token)
+//   const userTopArtist = await getTopArtist(token)
+
+
+//   return {
+//     userArtistFollowing,
+//     userPlaylist,
+//     // userSavedTracks,
+//     filteredTracks,
+//     userTopTracks,
+//     userTopArtist,
+//     user
+//   }
+// }
+
+
+const getGenres = (list) => {
+  for (const el of list) {
+    genresList.push(...el.genres)
+  }
+  // return genresList
+}
+
 
 
 module.exports = {
@@ -122,5 +164,5 @@ module.exports = {
   playlist, savedtracks,
   getTopTracks,
   getTopArtist,
-  userData
+  userData,
 }
