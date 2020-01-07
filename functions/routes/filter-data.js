@@ -15,32 +15,32 @@ const userData = (list) => {
         const createdAt = el.added_at.split('-');
         const artist = el.track.album.artists[0].name
 
-            // TRACKS ADDED THIS YEAR, MONTH, LAST YEAR
-            // tracks added this year
-            if(createdAt[0] === date[0] ) thisYear.push(el);
-            // Tracks added last year
-            if(Number(createdAt[0]) === Number(date[0] - 1))  lastYear.push(el);
-            //Tracks Added This Month
-            if (createdAt[0] === date[0] && createdAt[1] === date[1]) thisMonth.push(el);
-            // ARTISTS LITENED TO
-    
-            
-            if(artistsList[artist]) {
-                artistsList[artist] += 1
-            } else {
-                artistsList[artist] = 1
-            }
+        // TRACKS ADDED THIS YEAR, MONTH, LAST YEAR
+        // tracks added this year
+        if (createdAt[0] === date[0]) thisYear.push(el);
+        // Tracks added last year
+        if (Number(createdAt[0]) === Number(date[0] - 1)) lastYear.push(el);
+        //Tracks Added This Month
+        if (createdAt[0] === date[0] && createdAt[1] === date[1]) thisMonth.push(el);
+        // ARTISTS LITENED TO
+
+
+        if (artistsList[artist]) {
+            artistsList[artist] += 1
+        } else {
+            artistsList[artist] = 1
+        }
     }); //end of loop
 
     let artistSorted = Object.keys(artistsList).sort(function (a, b) { return artistsList[a] - artistsList[b] }).reverse()
 
-    
+
 
 
     // artistSorted = returnSortedArtistValues(artistSorted.reverse(), artistsList)
-    const finalList  = returnSortedArtistValues(artistSorted, artistsList)
+    const finalList = returnSortedArtistValues(artistSorted, artistsList)
     // console.log('sorted', artistSorted)
-    return {thisMonth, thisYear, lastYear, finalList }
+    return { thisMonth, thisYear, lastYear, finalList }
 }
 
 // this sniped gives the sorted list the object values back, might not be necessery
@@ -62,21 +62,21 @@ const returnSortedArtistValues = (list, original) => {
 
 const mergeGenresList = (list) => {
     const genres = [];
-    const finalList =  []
-    const newList = ','+list.join(',') + ','
-  
+    const finalList = []
+    const newList = ',' + list.join(',') + ','
+
     list.map(el => {
         const regex = new RegExp(`,${el},`, 'g');
-        if(!genres.includes(el)) {
-            finalList.push({name: el, total: newList.match(regex).length})
+        if (!genres.includes(el)) {
+            finalList.push({ name: el, total: newList.match(regex).length })
             genres.push(el)
         }
     });
 
-    return finalList.sort((a, b) => b.total-a.total);
-    
-    
+    return finalList.sort((a, b) => b.total - a.total);
+
+
 }
 
 
-module.exports = {userData, mergeGenresList}
+module.exports = { userData, mergeGenresList }

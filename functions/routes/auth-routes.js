@@ -39,24 +39,24 @@ router.post('/loginUser', async (req, res) => {
     url: 'https://api.spotify.com/v1/me',
     headers: {
       'Authorization': `Bearer ${req.body.token}`,
-      'Access-Control-Allow-Origin':  keys.cors['spotify-header']
+      'Access-Control-Allow-Origin': keys.cors['spotify-header']
     }
   };
 
   const userInfo = await rp(options)
     .then(res => JSON.parse(res))
-    // .catch(err => console.log('err', err))
+  // .catch(err => console.log('err', err))
 
 
   const currentUser = await userDB.searchDBForUser(userInfo, req.body.token)
   const userData = await analyticsSearch.userData(currentUser, req.body.token)
 
- 
+
 
   userDB.saveUserData(userData, req.body.token).then(() => {
     res.send(currentUser)
   })
-    // .catch(err => console.log('Error Saving User to the db', err))
+  // .catch(err => console.log('Error Saving User to the db', err))
 
 
 
@@ -74,7 +74,7 @@ router.post('/savedUser', cache(960000), (req, res) => {
     res.send(response)
   })
 
-  
+
 
 
 
@@ -82,7 +82,7 @@ router.post('/savedUser', cache(960000), (req, res) => {
 
 
 router.get('/logout', (req, res) => {
-  if(mcache.keys().length) {
+  if (mcache.keys().length) {
     mcache.clear();
   }
   res.send('200')

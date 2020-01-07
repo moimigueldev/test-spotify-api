@@ -14,7 +14,7 @@ const artistFollowing = async (token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).artists.items)
-    // .catch(err => console.log('Error with geting users artist following', err))
+  // .catch(err => console.log('Error with geting users artist following', err))
 }
 
 const playlist = async (id, token) => {
@@ -29,7 +29,7 @@ const playlist = async (id, token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).items)
-    // .catch(err => console.log('Error with getting the user\'s Playlist', err))
+  // .catch(err => console.log('Error with getting the user\'s Playlist', err))
 
 }
 
@@ -91,16 +91,16 @@ const getTopArtist = async (token) => {
   };
 
   return rp(options).then(response => JSON.parse(response).items)
-    // .catch(err => {
-    //   console.log("err", err)
-    // })
+  // .catch(err => {
+  //   console.log("err", err)
+  // })
 }
 
 const genresList = []
 const savedTracksOffset = 0;
 
 const userData = async (user, token) => {
- 
+
 
   const userArtistFollowing = await artistFollowing(token);
   getGenres(userArtistFollowing)

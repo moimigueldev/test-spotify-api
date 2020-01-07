@@ -19,7 +19,7 @@ const searchDBForUser = async (userLoggedIn, token) => {
             token
         }
 
-        
+
         db.collection('users').doc(profile.id).set(newUser).then((user) => {
             return user.data();
         })
@@ -29,20 +29,20 @@ const searchDBForUser = async (userLoggedIn, token) => {
 }
 
 
-const saveUserData = async(data, token) => {
-     await db.doc(`users/${data.user.id}/${data.user.id}/analytics`).set({
+const saveUserData = async (data, token) => {
+    await db.doc(`users/${data.user.id}/${data.user.id}/analytics`).set({
         artistFollowing: data.userArtistFollowing,
         playlist: data.userPlaylist,
         topTracks: data.userTopTracks,
         topArtist: data.userTopArtist,
         topGenres: data.topGenres,
-        
+
     });
-    
-     await db.doc(`users/${data.user.id}/${data.user.id}/filteredData`).set({
-        tracksSavedThisMonth : data.filteredTracks.thisMonth,
-        tracksSavedThisYear : data.filteredTracks.thisYear,
-        tracksSavedlastYear : data.filteredTracks.lastYear,
+
+    await db.doc(`users/${data.user.id}/${data.user.id}/filteredData`).set({
+        tracksSavedThisMonth: data.filteredTracks.thisMonth,
+        tracksSavedThisYear: data.filteredTracks.thisYear,
+        tracksSavedlastYear: data.filteredTracks.lastYear,
         mostListenedArtist: data.filteredTracks.finalList
     })
 
@@ -56,11 +56,11 @@ const saveUserData = async(data, token) => {
     //     console.log('could not save to the database', err)
     // })
 
-    
-    
+
+
 }
 
-const getSavedUserData = async(cookie) => {
+const getSavedUserData = async (cookie) => {
     const id = cookie.id
     const filteredData = await db.doc(`users/${id}/${id}/filteredData`).get().then(response => {
         return response.data()
@@ -76,13 +76,13 @@ const getSavedUserData = async(cookie) => {
     //     console.log('ERROR Could not get user', err)
     // })
 
-    
 
-    return {analytics, filteredData}
 
-    
+    return { analytics, filteredData }
 
-    
+
+
+
 }
 
 
