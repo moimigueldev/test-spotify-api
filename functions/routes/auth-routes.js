@@ -6,7 +6,7 @@ const analyticsSearch = require('./collect-user-data')
 const cache = require('./cache-routes')
 const SpotifyWebApi = require('spotify-web-api-node');
 var mcache = require('memory-cache');
-// const cors = require('cors')
+
 
 
 const scopes = keys.spotify['scopes'];
