@@ -11,7 +11,6 @@ const searchDBForUser = async (userLoggedIn, token) => {
 
     //does not exist yet
     if (!user.data()) { 
-        // console.log('creating new user');
         const newUser = {
             id: profile.id,
             dateUpdated: new Date(),
@@ -54,7 +53,7 @@ const saveUserData = async (data, token) => {
         return response
     })
     // .catch(err => {
-    //     console.log('could not save to the database', err)
+    //     
     // })
 
 
@@ -67,14 +66,14 @@ const getSavedUserData = async (cookie) => {
         return response.data()
     })
     // .catch(err => {
-    //     console.log('ERROR Could not get user', err)
+    //    
     // })
 
     const analytics = await db.doc(`users/${id}/${id}/analytics`).get().then(response => {
         return response.data()
     })
     // .catch(err => {
-    //     console.log('ERROR Could not get user', err)
+    //    
     // })
 
 
