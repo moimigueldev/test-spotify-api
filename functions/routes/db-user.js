@@ -9,7 +9,8 @@ const searchDBForUser = async (userLoggedIn, token) => {
     const profile = userLoggedIn
     const user = await db.collection('users').doc(profile.id).get();
 
-    if (!user.data()) { //does not exist yet
+    //does not exist yet
+    if (!user.data()) { 
         // console.log('creating new user');
         const newUser = {
             id: profile.id,
@@ -27,7 +28,7 @@ const searchDBForUser = async (userLoggedIn, token) => {
         return user.data();
     }
 }
-
+ 
 
 const saveUserData = async (data, token) => {
     await db.doc(`users/${data.user.id}/${data.user.id}/analytics`).set({
